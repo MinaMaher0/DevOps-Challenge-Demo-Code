@@ -9,7 +9,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'docker build -t torando:test && docker rnu -p 8000:8000 torando:test python tests/test.py'
+                sh 'docker build -t torando:test . && docker rnu -p 8000:8000 torando:test python tests/test.py'
             }
         }
         stage('Deploy') {

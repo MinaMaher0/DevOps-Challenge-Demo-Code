@@ -1,6 +1,7 @@
 FROM python:3.7
 
-RUN apt install python3-pip
+RUN apt-get update
+RUN apt-get install python3-pip -y
 
 WORKDIR /app
 

@@ -2,9 +2,9 @@ pipeline {
     agent { label 'docker' }
 
     stages {
-        stage('Build') {
+        stage('clean docker') {
             steps {
-                echo 'Building..'
+                sh 'docker stop $(docker ps -q) && docker rm $(docker ps -a -q)'
             }
         }
         stage('Test') {
@@ -14,7 +14,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                echo 'Deploying....'
+                sh 'docker-compose up -d'
             }
         }
     }

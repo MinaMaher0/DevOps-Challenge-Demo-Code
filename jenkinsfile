@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Test') {
             steps {
-                sh 'docker build -t torando:test . && docker run torando:test -c "python tests/test.py"'
+                sh 'docker build -t torando:test . && docker run torando:test --cmd "python tests/test.py"'
             }
         }
         stage('clean docker') {

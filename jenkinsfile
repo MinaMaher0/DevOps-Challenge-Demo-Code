@@ -15,8 +15,9 @@ pipeline {
                             }catch(err){
                                 slackSend channel: '#first-challenge', 
                                         color: 'danger',
-                                        message: 'Done and Tested'
-                                currentBuild.result='FAILURE'
+                                        message: 'Error'
+                                currentBuild.result = 'ABORTED'
+                                error('Testing Failed…')
                             }
                         }
                     }

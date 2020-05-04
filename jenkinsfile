@@ -53,5 +53,16 @@ pipeline {
                 }
             }
         }
+        stage('send slack message'){
+            agent any
+            stages{
+                stage('send done and tested message'){
+                    steps {
+                        slackSend channel: '#first-challenge', 
+                                message: 'Done and Tested'
+                    }
+                }
+            }
+        }
     }
 }

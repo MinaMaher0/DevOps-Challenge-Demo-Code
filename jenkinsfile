@@ -8,8 +8,15 @@ pipeline {
             }
             stages{
                 stage('build App image'){
-                    steps {
-                        sh 'docker build -t torando:latest .'
+                    try{
+                        steps {
+                            sh 'docker build -t torando:latest .'
+                        }
+                    }catch(err){
+                        slackSend channel: '#first-challenge', 
+                                color: 'danger',
+                                message: 'Done and Tested'
+                        currentBuild.result='FAILURE'
                     }
                 }
                 stage('clean development envirnment') {
@@ -59,6 +66,7 @@ pipeline {
                 stage('send done and tested message'){
                     steps {
                         slackSend channel: '#first-challenge', 
+                                color: 'good',
                                 message: 'Done and Tested'
                     }
                 }

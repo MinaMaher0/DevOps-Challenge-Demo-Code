@@ -9,14 +9,10 @@ pipeline {
                         sh 'docker build -t torando:latest .'
                     }
                 }
-                stage('clean development envirnment') {
-                    steps {
-                        sh 'docker stop $(docker ps -q) && docker rm $(docker ps -a -q)'
-                    }
-                }
+                
                 stage('deploy on development environment'){
                     steps {
-                        sh 'docker-compose up -d'
+                        sh 'docker-compose up -d --abort-on-container-exit"'
                     }
                 }
             }
@@ -24,11 +20,7 @@ pipeline {
         stage('Deploy on Production environment') {
             agent { label 'production' }
             stages{
-                stage('clean production envirnment') {
-                    steps {
-                        sh 'docker stop $(docker ps -q) && docker rm $(docker ps -a -q)'
-                    }
-                }
+                
                 stage('build App image'){
                     steps {
                         sh 'docker build -t torando:latest .'
@@ -36,7 +28,7 @@ pipeline {
                 }
                 stage('deploy on production envirnment'){
                     steps {
-                        sh 'docker-compose up -d'
+                        sh 'docker-compose up -d --abort-on-container-exit"'
                     }
                 }
             }

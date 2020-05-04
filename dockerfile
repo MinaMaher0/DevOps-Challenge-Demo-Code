@@ -11,6 +11,6 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-ENTRYPOINT python
+RUN python tests/test.py
 
-CMD  hello.py
+ENTRYPOINT python hello.py

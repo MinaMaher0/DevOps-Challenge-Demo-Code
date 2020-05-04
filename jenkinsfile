@@ -11,7 +11,7 @@ pipeline {
                 }
                 stage('clean development envirnment') {
                     steps {
-                        atchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
+                        catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
                             sh 'docker stop $(docker ps -q)'
                             sh 'docker rm $(docker ps -a -q)'
                         }
@@ -29,7 +29,7 @@ pipeline {
             stages{
                 stage('clean production envirnment') {
                     steps {
-                        atchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
+                        catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
                             sh 'docker stop $(docker ps -q)'
                             sh 'docker rm $(docker ps -a -q)'
                         }

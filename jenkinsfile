@@ -9,10 +9,17 @@ pipeline {
                         sh 'docker build -t torando:latest .'
                     }
                 }
-                
+                stage('clean development envirnment') {
+                    steps {
+                        atchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
+                            sh 'docker stop $(docker ps -q)'
+                            sh 'docker rm $(docker ps -a -q)'
+                        }
+                    }
+                }
                 stage('deploy on development environment'){
                     steps {
-                        sh 'docker-compose up -d --abort-on-container-exit'
+                        sh 'docker-compose up -d'
                     }
                 }
             }
@@ -20,7 +27,14 @@ pipeline {
         stage('Deploy on Production environment') {
             agent { label 'production' }
             stages{
-                
+                stage('clean production envirnment') {
+                    steps {
+                        atchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
+                            sh 'docker stop $(docker ps -q)'
+                            sh 'docker rm $(docker ps -a -q)'
+                        }
+                    }
+                }
                 stage('build App image'){
                     steps {
                         sh 'docker build -t torando:latest .'
@@ -28,7 +42,7 @@ pipeline {
                 }
                 stage('deploy on production envirnment'){
                     steps {
-                        sh 'docker-compose up -d --abort-on-container-exit"'
+                        sh 'docker-compose up -d'
                     }
                 }
             }

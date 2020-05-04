@@ -12,7 +12,7 @@ pipeline {
                 
                 stage('deploy on development environment'){
                     steps {
-                        sh 'docker-compose up -d --abort-on-container-exit"'
+                        sh 'docker-compose up -d --abort-on-container-exit'
                     }
                 }
             }

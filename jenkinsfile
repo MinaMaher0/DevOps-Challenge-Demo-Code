@@ -14,6 +14,7 @@ pipeline {
                                     sh 'docker build -t torando:latest .'
                             }catch(err){
                                 slackSend channel: '#first-challenge', 
+                                        image_url: "https://lh3.googleusercontent.com/proxy/xaMXEOYbUto73PxWXBXN50IHleQ4duwWo7802tNZ4odsni4ptIANiQcerhLj-IxzYtOxnCnVjbqbdBXoNdVLbjeGSUhtAeVmKWBU_9PgpIQZAOR8TMrD1BEIpvSSfVw",
                                         color: 'danger',
                                         message: 'Error'
                                 currentBuild.result = 'ABORTED'

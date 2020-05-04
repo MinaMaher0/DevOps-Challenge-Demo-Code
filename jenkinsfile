@@ -3,6 +3,9 @@ pipeline {
     stages {
         stage('Build And Test on Development environment') {
             agent { label 'development' }
+            environment {
+                ENV_TYPE = 'DEV'
+            }
             stages{
                 stage('build App image'){
                     steps {
@@ -26,6 +29,9 @@ pipeline {
         }
         stage('Deploy on Production environment') {
             agent { label 'production' }
+            environment {
+                ENV_TYPE = 'PROD'
+            }
             stages{
                 stage('clean production envirnment') {
                     steps {

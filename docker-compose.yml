@@ -13,7 +13,7 @@ services:
     ports: 
       - "8000:8000"
     environment:
-      - ENVIRONMENT=DEV
+      - ENVIRONMENT=${ENV_TYPE}
       - HOST=localhost
       - PORT=8000
       - REDIS_HOST=redis

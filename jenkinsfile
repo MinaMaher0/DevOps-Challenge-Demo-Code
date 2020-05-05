@@ -2,6 +2,9 @@ pipeline {
     agent none
     stages {
         stage('Build And Test on Development environment') {
+            when {
+                branch 'development'  
+            }
             agent { label 'development' }
             environment {
                 ENV_TYPE = 'DEV'
@@ -38,6 +41,9 @@ pipeline {
             }
         }
         stage('Deploy on Production environment') {
+            when {
+                branch 'master'  
+            }
             agent { label 'production' }
             environment {
                 ENV_TYPE = 'PROD'

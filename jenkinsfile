@@ -76,7 +76,7 @@ pipeline {
                     steps {
                         slackSend channel: '#first-challenge', 
                                 color: 'good',
-                                message: 'Done and Tested'
+                                message: "${env.BRANCH_NAME} Done and Tested"
                     }
                 }
             }

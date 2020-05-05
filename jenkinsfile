@@ -74,12 +74,9 @@ pipeline {
             stages{
                 stage('send done and tested message'){
                     steps {
-                        script{
-                            def foo = env.BRANCH_NAME
-                        }
                         slackSend channel: '#first-challenge', 
                                 color: 'good',
-                                message: "${foo} Done and Tested"
+                                message: "${env.BRANCH_NAME} Done and Tested"
                     }
                 }
             }

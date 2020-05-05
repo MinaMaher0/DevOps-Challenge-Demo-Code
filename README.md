@@ -1,6 +1,6 @@
 # DevOps Challenge Demo Code:
 
-[![Build Status](http://54.81.29.48:8080/buildStatus/icon?job=tornado%2Fmaster)](http://54.81.29.48:8080/job/tornado/job/master/)
+[![Build Status](http://52.205.138.131:8080/buildStatus/icon?job=tornado%2Fmaster)](http://52.205.138.131:8080/job/tornado/job/master/)
 
 This application will be used as a demo for DevOps Challenges.
 

@@ -8,23 +8,14 @@ pipeline {
             agent { label 'development' }
             environment {
                 ENV_TYPE = 'DEV'
+                HOST = 'localhost'
+                PORT = '8000'
+                REDIS_HOST = 'redis'
+                REDIS_PORT = '6379'
+                REDIS_DB = '0'
+                RUN_TYPE = ''
             }
             stages{
-                stage('build App image'){
-                    steps {
-                        script {
-                            try{
-                                    sh 'docker build -t torando:latest .'
-                            }catch(err){
-                                slackSend channel: '#first-challenge', 
-                                        color: 'danger',
-                                        message: 'Testing Failed'
-                                currentBuild.result = 'FAILED'
-                                error('Testing Failed…')
-                            }
-                        }
-                    }
-                }
                 stage('clean development envirnment') {
                     steps {
                         catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
@@ -35,7 +26,12 @@ pipeline {
                 }
                 stage('deploy on development environment'){
                     steps {
-                        sh 'docker-compose up -d'
+                        sh 'docker-compose up -d --build'
+                    }
+                }
+                stage('testing'){
+                    steps{
+                        sh 'docker exec  App python tests/test.py'
                     }
                 }
             }
@@ -45,10 +41,31 @@ pipeline {
                 branch 'master'  
             }
             agent { label 'production' }
-            environment {
-                ENV_TYPE = 'PROD'
-            }
+            
             stages{
+                stage('Testing'){
+                    stages{
+                        stage('deploy on development environment'){
+                            environment {
+                                ENV_TYPE = 'PROD'
+                                HOST = 'localhost'
+                                PORT = '8001'
+                                REDIS_HOST = 'redisTEST'
+                                REDIS_PORT = '6380'
+                                REDIS_DB = '0'
+                                RUN_TYPE = 'TEST'
+                            }
+                            steps {
+                                sh 'docker-compose up -d --build'
+                            }
+                        }
+                        stage('testing'){
+                            steps{
+                                sh 'docker exec  AppTEST python tests/test.py'
+                            }
+                        }
+                    }
+                }
                 stage('clean production envirnment') {
                     steps {
                         catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
@@ -57,20 +74,24 @@ pipeline {
                         }
                     }
                 }
-                stage('build App image'){
-                    steps {
-                        sh 'docker build -t torando:latest .'
-                    }
-                }
                 stage('deploy on production envirnment'){
+                    environment {
+                        ENV_TYPE = 'PROD'
+                        HOST = 'localhost'
+                        PORT = '8000'
+                        REDIS_HOST = 'redis'
+                        REDIS_PORT = '6379'
+                        REDIS_DB = '0'
+                        RUN_TYPE = ''
+                    }
                     steps {
-                        sh 'docker-compose up -d'
+                        sh 'docker-compose up -d --build'
                     }
                 }
             }
         }
         stage('send slack message'){
-            agent any
+            agent { label 'development' }
             stages{
                 stage('send done and tested message'){
                     steps {

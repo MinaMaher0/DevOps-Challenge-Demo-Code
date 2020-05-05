@@ -3,19 +3,21 @@ services:
   redis: 
     image: redis:latest
     ports:
-    - "6379:6379"
+    - "${REDIS_PORT}:${REDIS_PORT}"
     volumes: 
-      - /redis:/data
+      - /redis${RUN_TYPE}:/data
+    container_name: redis${RUN_TYPE}
   app:
-    image: torando:latest
+    build: .
     depends_on: 
       - redis
     ports: 
-      - "8000:8000"
+      - "${PORT}:${PORT}"
     environment:
       - ENVIRONMENT=${ENV_TYPE}
       - HOST=localhost
-      - PORT=8000
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
+      - PORT=${PORT}
+      - REDIS_HOST=redis${RUN_TYPE}
+      - REDIS_PORT=${REDIS_PORT}
       - REDIS_DB=0
+    container_name: App${RUN_TYPE}
